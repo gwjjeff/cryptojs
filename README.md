@@ -1,14 +1,17 @@
-* with little modification, converted from googlecode project "crypto-js":http://code.google.com/p/crypto-js/
-* source code worked in both browser engines and node scripts. see also: "https://github.com/gwjjeff/crypto-js-npm-conv":https://github.com/gwjjeff/crypto-js-npm-conv
-* inspiration comes from "ezcrypto":https://github.com/ElmerZhang/ezcrypto , but my tests cannot pass with his version ( ECB/pkcs7 mode ), so I made it myself
+cryptojs
+--------
 
-h3. install
+* with little modification, converted from googlecode project [crypto-js](http://code.google.com/p/crypto-js/), and keep the source code structure of the origin project on googlecode
+* source code worked in both browser engines and node scripts. see also: [https://github.com/gwjjeff/crypto-js-npm-conv](https://github.com/gwjjeff/crypto-js-npm-conv)
+* inspiration comes from [ezcrypto](https://github.com/ElmerZhang/ezcrypto), but my tests cannot pass with his version ( ECB/pkcs7 mode ), so I made it myself
+
+### install
 
 <pre>
 npm install cryptojs
 </pre>
 
-h3. usage ( example with "coffee-script":http://coffeescript.org/ )
+### usage (example with [coffee-script](http://coffeescript.org/))
 
 <pre>
 Crypto = (require 'cryptojs').Crypto
