@@ -1,4 +1,4 @@
-Crypto = (require 'cryptojs').Crypto
+Crypto = (require '../cryptojs').Crypto
 key = '12345678'
 us = 'Hello, 世界!'
 

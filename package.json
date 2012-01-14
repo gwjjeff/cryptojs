@@ -9,7 +9,7 @@
     "type": "git",
     "url": "git://github.com/gwjjeff/cryptojs.git"
   },
-  "main": "index.js",
+  "main": "cryptojs.js",
   "engines": {
     "node": "*"
   },
