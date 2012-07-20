@@ -7,13 +7,13 @@ cryptojs
 
 ### install
 
-<pre>
+```
 npm install cryptojs
-</pre>
+```
 
 ### usage (example with [coffee-script](http://coffeescript.org/))
 
-<pre>
+```coffee
 Crypto = (require 'cryptojs').Crypto
 key = '12345678'
 us = 'Hello, 世界!'
@@ -29,4 +29,4 @@ ub2= Crypto.DES.decrypt eb2, key, {asBytes: true, mode: mode}
 us2= Crypto.charenc.UTF8.bytesToString ub2
 # should be same as the var 'us'
 console .log us2
-</pre>
+```
