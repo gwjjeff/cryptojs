@@ -1,3 +1,4 @@
+[![build status](https://secure.travis-ci.org/gwjjeff/cryptojs.png)](http://travis-ci.org/gwjjeff/cryptojs)
 cryptojs
 --------
 
