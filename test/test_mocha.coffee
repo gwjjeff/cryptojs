@@ -32,31 +32,37 @@ describe 'util',->
 describe 'Cipher', ->
   mode = new Crypto.mode.ECB Crypto.pad.pkcs7
   describe 'encrypt', ->
-    describe 'with options provided', ->
-      it 'should return a byte string with asBytes=true', ->
-        eb = Crypto.DES.encrypt us_bytes, key, {asBytes: true, mode: mode}
-        eb.should.eql [77,106,221,17,142,214,62,212,121,157,55,25,151,111,167,203]
+    for [crypt_name,crypt_fn] in [["DES", Crypto.DES], ["AES",Crypto.AES]]
+      do (crypt_name,crypt_fn)->
+        describe "#{crypt_name} with options provided", ->
+          enc_b = null
+          it 'should return a byte string with asBytes=true', ->
+            eb = crypt_fn.encrypt us_bytes, key, {asBytes: true, mode: mode}
+            eb.should.be.an.instanceOf Array
+            enc_b = eb
 
-      it 'should return a base64 string if asBytes not given', ->
-        eb = Crypto.DES.encrypt us_bytes, key, {mode: mode}
-        eb64 = Crypto.util.bytesToBase64 [77,106,221,17,142,214,62,212,121,157,55,25,151,111,167,203]
-        eb.should.eql eb64
+          it 'should return a base64 string if asBytes not given', ->
+            eb64 = crypt_fn.encrypt us_bytes, key, {mode: mode}
+            eb64.should.be.a 'string'
+            eb = null
+            (()->
+              eb = Crypto.util.base64ToBytes(eb64)
+            ).should.not.throw()
+            eb.should.eql enc_b
 
-      it 'should not overwrite input byte array as a side effect',->
-        tmp = us_bytes
-        eb = Crypto.DES.encrypt tmp, key, {asBytes: true, mode: mode}
-        tmp.should.eql [72,101,108,108,111,44,32,228,184,150,231,149,140,33]
-        eb.should.eql [77,106,221,17,142,214,62,212,121,157,55,25,151,111,167,203]
+          it 'should not overwrite input byte array as a side effect',->
+            tmp = us_bytes
+            eb = crypt_fn.encrypt tmp, key, {asBytes: true, mode: mode}
+            eb.should.not.eql tmp
 
-      it 'should overwrite the input byte array if in_place is given', ->
-        tmp = us_bytes.slice()
-        eb = Crypto.DES.encrypt tmp, key, {asBytes: true, mode: mode, in_place: true}
-        tmp.should.eql [77,106,221,17,142,214,62,212,121,157,55,25,151,111,167,203]
-        eb.should.eql [77,106,221,17,142,214,62,212,121,157,55,25,151,111,167,203]
+          it 'should overwrite the input byte array if in_place is given', ->
+            tmp = us_bytes.slice()
+            eb = crypt_fn.encrypt tmp, key, {asBytes: true, mode: mode, in_place: true}
+            eb.should.eql tmp
 
-    describe 'without options', ->
-      it 'should default to OFB mode with a generated iv', ->
-        es = Crypto.DES.encrypt us_bytes, key
+      describe "#{crypt_name} without options", ->
+        it 'should default to OFB mode with a generated iv', ->
+          es = crypt_fn.encrypt us_bytes, key
 
-        db = Crypto.DES.decrypt Crypto.util.base64ToBytes(es), key, {asBytes: true}
-        db.should.eql us_bytes
+          db = crypt_fn.decrypt Crypto.util.base64ToBytes(es), key, {asBytes: true}
+          db.should.eql us_bytes
