@@ -14,5 +14,5 @@
     "node": "*"
   },
   "dependencies": {},
-  "devDependencies": {}
+  "devDependencies": {"mocha","should"}
 }
