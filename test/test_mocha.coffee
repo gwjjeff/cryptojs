@@ -31,9 +31,9 @@ describe 'util',->
 
 describe 'Cipher', ->
   mode = new Crypto.mode.ECB Crypto.pad.pkcs7
-  describe 'encrypt', ->
-    for [crypt_name,crypt_fn] in [["DES", Crypto.DES], ["AES",Crypto.AES]]
-      do (crypt_name,crypt_fn)->
+  for [crypt_name,crypt_fn] in [["DES", Crypto.DES], ["AES",Crypto.AES]]
+    do (crypt_name,crypt_fn)->
+      describe 'encrypt', ->
         describe "#{crypt_name} with options provided", ->
           enc_b = null
           it 'should return a byte string with asBytes=true', ->
@@ -66,3 +66,29 @@ describe 'Cipher', ->
 
           db = crypt_fn.decrypt Crypto.util.base64ToBytes(es), key, {asBytes: true}
           db.should.eql us_bytes
+
+  describe 'AES check_keys',->
+    it 'should throw an error with an invalid key length',->
+      invalid_key = [91,92,93,94]
+      (()->
+        es = crypt_fn.encrypt us_bytes, invalid_key
+      ).should.throw()
+
+    it 'should not throw an error with valid key lengths',->
+      valid_key_16 = [1..16]
+      valid_key_24 = [1..24]
+      valid_key_32 = [1..32]
+      (()->
+        es = crypt_fn.encrypt us_bytes, valid_key_16
+      ).should.not.throw()
+      (()->
+        es = crypt_fn.encrypt us_bytes, valid_key_24
+      ).should.not.throw()
+      (()->
+        es = crypt_fn.encrypt us_bytes, valid_key_32
+      ).should.not.throw()
+
+    it 'should expand keys to valid lengths',->
+      (()->
+        es = crypt_fn.encrypt us_bytes, key
+      ).should.not.throw()
