@@ -59,6 +59,9 @@ describe 'Cipher', ->
             tmp = us_bytes.slice()
             eb = crypt_fn.encrypt tmp, key, {asBytes: true, mode: mode, in_place: true}
             eb.should.eql tmp
+            eb.should.equal tmp
+
+
 
       describe "#{crypt_name} without options", ->
         it 'should default to OFB mode with a generated iv', ->
